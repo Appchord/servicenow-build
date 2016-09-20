@@ -1,6 +1,9 @@
 'use strict';
 
 const async = require('async');
+const colors = require('colors/safe');
+const util = require('util');
+
 const DataProvider = require('./../helpers/data.provider');
 let dataProvider = new DataProvider();
 
@@ -22,7 +25,7 @@ function launch() {
         }
     ], function (err, result) {
         if (err) {
-            console.error(err);
+            console.log(colors.red(util.inspect(err, null)));
             process.exit(1);
             return;
         }
@@ -30,7 +33,7 @@ function launch() {
         if (res && res.failed) {
             console.error('%s test(s) failed', res.failed);
             res.errors.forEach(function(error) {
-                console.error(error);
+                console.log(colors.red(util.inspect(error, null)));
             });
             process.exit(1);
         }
