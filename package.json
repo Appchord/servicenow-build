@@ -5,7 +5,7 @@
   "main": "main.js",
   "private": false,
   "scripts": {
-    "test": "tests/test001"
+    "test": "validate"
   },
   "repository": {
     "type": "git",
