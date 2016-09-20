@@ -1,4 +1,4 @@
 (function() {
     'use strict';
-    require('./tests')();
+    require('./tests');
 }());
