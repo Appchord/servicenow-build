@@ -1,0 +1,38 @@
+{
+  "name": "servicenow-build",
+  "version": "1.0.0",
+  "description": "Service Now build validation and release",
+  "main": "main.js",
+  "private": false,
+  "scripts": {
+    "test": "tests/test001"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Appchord/servicenow-build.git"
+  },
+  "keywords": [
+    "Service Now",
+    "build",
+    "release"
+  ],
+  "author": "Mobichord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Appchord/servicenow-build/issues"
+  },
+  "homepage": "https://github.com/Appchord/servicenow-build#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [],
+      "pre-push": [],
+      "post-commit": [],
+      "post-merge": [],
+      "commit-msg": []
+    }
+  }
+}
