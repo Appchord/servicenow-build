@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Appchord/servicenow-build#readme",
   "dependencies": {},
   "devDependencies": {
+    "async": "^2.0.1",
     "superagent": "^2.2.0"
   },
   "config": {

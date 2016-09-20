@@ -2,42 +2,52 @@
 
 const request = require('superagent');
 
-function DataProvider() {
-}
+function DataProvider() {}
 
-DataProvider.prototype.get = function(url, callback) {
-    var credentials = readCredentials();
-    let fullUrl = 'https://' + credentials.environment + url;
-    console.log(fullUrl);
-    let req = request.get(fullUrl);
-    req
-        .auth(credentials.user, credentials.password)
-        .end(function(err, response) {
-            if (err) {
-                // No records found
-                if (response && response.notFound && (response.header['content-type'] && response.header['content-type'].indexOf('application/json') !== -1)) {
-                    return callback(null);
-                }
-                throw new Error(err);
-            }
+DataProvider.prototype.get = function(url) {
+    return new Promise((resolve, reject) => {
+        try {
+            var credentials = readCredentials();
+            let fullUrl = 'https://' + credentials.environment + url;
 
-            // No records found
-            if (!response.body.result) {
-                return callback(null);
-            }
+            let req = request.get(fullUrl);
 
-            if (response.body.result.length <= 0) {
-                return callback(null);
-            }
+            req
+                .auth(credentials.user, credentials.password)
+                .end(function(err, response) {
+                    if (err) {
+                        // No records found
+                        if (response && response.notFound && (response.header['content-type'] && response.header['content-type'].indexOf('application/json') !== -1)) {
+                            resolve(null);
+                            return;
+                        }
+                        reject(err);
+                        return;
+                    }
 
-            callback(response.body.result);
-        });
+                    // No records found
+                    if (!response.body.result) {
+                        resolve(null);
+                        return;
+                    }
+
+                    if (response.body.result.length <= 0) {
+                        resolve(null);
+                        return;
+                    }
+
+                    resolve(response.body.result);
+                });
+        } catch (e) {
+            reject(e);
+        }
+    });
 };
 
-DataProvider.prototype.getRecords = function(table, params, callback) {
+DataProvider.prototype.getRecords = function(table, params) {
     let url = '/api/now/table/' + table + parseParams(params);
-    return this.get(url, function(res) {
-        callback(res || []);
+    return this.get(url).then(function(res) {
+        return res || [];
     });
 };
 
