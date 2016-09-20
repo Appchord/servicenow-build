@@ -5,7 +5,7 @@
   "main": "main.js",
   "private": false,
   "scripts": {
-    "validate": "node validate"
+    "validate-app": "node validate-app"
   },
   "repository": {
     "type": "git",

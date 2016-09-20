@@ -4,4 +4,6 @@ machine:
 
 test:
   post:
-     - npm run validate
+     - >
+      if [ -n "${SN_ENVIRONMENT}" ]; then
+        npm run validate-app ${SN_ENVIRONMENT} ${SN_USER} ${SN_PWD}
