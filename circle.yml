@@ -1,4 +1,8 @@
 machine:
+  environment:
+     SN_ENVIRONMENT:
+     SN_USER:
+     SN_PWD:
   node:
      version: 6.1.0
 
