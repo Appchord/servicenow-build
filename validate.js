@@ -1,4 +1,4 @@
 (function() {
-    var test = require('./tests/test001');
-    test.execute();
+    'use strict';
+    require('./tests')();
 }());
