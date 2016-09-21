@@ -1,21 +1,22 @@
 'use strict';
 
-const DataProvider = require('./../helpers/data.provider');
+const util = require('util');
+
+const DataProvider = require('./../../helpers/data.provider');
 let dataProvider = new DataProvider();
 
 exports.execute = execute;
-const query = 'sys_scope=58458eaa4f5a7100b722a5017310c7f2^element!=NULL^nameNOT LIKEimport^hint=NULL^elementNOT LIKEsys_';
 
-function execute() {
+function execute(table, query, errorDescription) {
     return new Promise((resolve, reject) => {
-        dataProvider.getRecords('sys_documentation',
+        dataProvider.getRecords(table,
             {
                 query: query,
                 limit: 1
             })
             .then(function(records) {
                 if (records.length) {
-                    reject(new Error('Found fields without hints. query: ' + query));
+                    reject(new Error(util.format('%s. Table: %s. Query: %s', errorDescription, table, query)));
                 }
                 resolve();
             }, function(err) {

@@ -84,6 +84,7 @@ function launchValidators() {
         promises.push(promise
             .then(
                 function () {
+                    console.log(colors.blue('Validating ' + testFile + '... OK'));
                     result.finished++;
                 },
                 function(error) {
