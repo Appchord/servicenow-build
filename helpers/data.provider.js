@@ -8,7 +8,7 @@ DataProvider.prototype.get = function(url) {
     return new Promise((resolve, reject) => {
         try {
             var credentials = readCredentials();
-            let fullUrl = 'https://' + credentials.environment + url;
+            let fullUrl = credentials.environment + url;
 
             let req = request.get(fullUrl);
 
@@ -45,7 +45,7 @@ DataProvider.prototype.get = function(url) {
 };
 
 DataProvider.prototype.getRecords = function(table, params) {
-    let url = '/api/now/table/' + table + parseParams(params);
+    let url = 'api/now/table/' + table + parseParams(params);
     return this.get(url).then(function(res) {
         return res || [];
     });
