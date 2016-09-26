@@ -10,9 +10,8 @@ const DataProvider = require('./../helpers/data.provider');
 let dataProvider = new DataProvider();
 
 function fail(err) {
-    let msg = util.inspect(err, null);
-    console.log(colors.red(msg));
-    throw new Error(msg);
+    console.log(colors.red(util.inspect(err, null)));
+    process.exit(1);
 }
 
 gulp.task('validate:connection', function (cb) {
@@ -86,7 +85,7 @@ function launchValidators(cb) {
             result.errors.forEach(function(error) {
                 console.log(colors.red(util.inspect(error, null)));
             });
-            throw new Error('Tests are not passed');
+            process.exit(1);
         }
         cb();
     });
