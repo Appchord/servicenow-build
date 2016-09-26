@@ -5,7 +5,7 @@
   "main": "main.js",
   "private": false,
   "scripts": {
-    "validate-app": "node validate-app"
+    "validate-app": "gulp validate"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,11 @@
   "homepage": "https://github.com/Appchord/servicenow-build#readme",
   "dependencies": {},
   "devDependencies": {
-    "async": "^2.0.1",
     "colors": "^1.1.2",
+    "gulp": "^3.9.1",
+    "minimist": "^1.2.0",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.2.2",
     "superagent": "^2.2.0"
   },
   "config": {

@@ -1,6 +1,7 @@
 'use strict';
 
 const request = require('superagent');
+const minimist = require('minimist');
 
 function DataProvider() {}
 
@@ -83,26 +84,11 @@ function parseParams(params) {
 }
 
 function readCredentials() {
-    let environment = '';
-    let user = '';
-    let password = '';
 
-    process.argv.forEach((val, index) => {
-        if (index < 2) {
-            return;
-        }
-        switch (index) {
-            case 2:
-                environment = val;
-                break;
-            case 3:
-                user = val;
-                break;
-            case 4:
-                password = val;
-                break;
-        }
-    });
+    let options = minimist(process.argv.slice(2));
+    let environment = options['sn-env'];
+    let user = options['sn-user'];
+    let password = options['sn-pwd'];
 
     if (!environment || !user || !password) {
         throw new Error('Required credentials are not provided');

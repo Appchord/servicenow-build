@@ -1,50 +1,33 @@
 'use strict';
 
-const async = require('async');
+const gulp = require('gulp');
+const sequence = require('run-sequence');
+
 const colors = require('colors/safe');
 const util = require('util');
 
 const DataProvider = require('./../helpers/data.provider');
 let dataProvider = new DataProvider();
 
-module.exports = launch;
+function fail(err) {
+    let msg = util.inspect(err, null);
+    console.log(colors.red(msg));
+    throw new Error(msg);
+}
 
-function launch() {
-    async.series([
-        function (callback) {
-            validateConnection().then(function () {
-                callback(null);
-            }, function (error) {
-                callback(error);
-            });
+gulp.task('validate:connection', function (cb) {
+    dataProvider.getRecords('sys_update_set', {limit: 1})
+        .then(function() {
+            cb();
         },
-        function (callback) {
-            launchValidators().then(function (result) {
-                callback(null, result);
-            });
-        }
-    ], function (err, result) {
-        if (err) {
-            console.log(colors.red(util.inspect(err, null)));
-            process.exit(1);
-            return;
-        }
-        let res = result[1];
-        if (res && res.failed) {
-            console.error('%s test(s) failed', res.failed);
-            res.errors.forEach(function(error) {
-                console.log(colors.red(util.inspect(error, null)));
-            });
-            process.exit(1);
-        }
-    });
-}
+        function(err) {
+            fail(err);
+        });
+});
 
-function validateConnection() {
-    return dataProvider.getRecords('sys_update_set', {limit: 1});
-}
+gulp.task('validate:validators', launchValidators);
 
-function launchValidators() {
+function launchValidators(cb) {
     const fs = require('fs');
 
     let result = {
@@ -61,7 +44,7 @@ function launchValidators() {
             return;
         }
 
-        let validator = require('./' + testFile.replace('.validator.js', '.validator'));
+        let validator = require('./../validators/' + testFile.replace('.validator.js', '.validator'));
         if (typeof validator.execute !== 'function') {
             return;
         }
@@ -97,7 +80,18 @@ function launchValidators() {
             ));
     });
 
-    return Promise.all(promises).then(function() {
-        return result;
+    Promise.all(promises).then(function() {
+        if (result.failed) {
+            console.error('%s test(s) failed', result.failed);
+            result.errors.forEach(function(error) {
+                console.log(colors.red(util.inspect(error, null)));
+            });
+            throw new Error('Tests are not passed');
+        }
+        cb();
     });
 }
+
+gulp.task('validate', function(cb) {
+    sequence('validate:connection', 'validate:validators', cb);
+});
