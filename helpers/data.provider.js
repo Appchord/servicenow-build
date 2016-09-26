@@ -94,6 +94,14 @@ function readCredentials() {
         throw new Error('Required credentials are not provided');
     }
 
+    if (!environment.startsWith('https://')) {
+        environment = 'https://' + environment;
+    }
+
+    if (!environment.endsWith('/')) {
+        environment += '/';
+    }
+
     return {
         environment: environment,
         user: user,
