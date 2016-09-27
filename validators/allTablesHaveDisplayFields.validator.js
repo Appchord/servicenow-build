@@ -31,8 +31,9 @@ function execute() {
                         } else {
                             utils.logError('Table ' + table.name + ' has no display field. Inherited from; ' + parentName);
                         }
+                    } else {
+                        utils.logError('Table ' + table.name + ' has no display field');
                     }
-                    utils.logError('Table ' + table.name + ' has no display field');
                     hasError = true;
                 });
                 if (hasError) {
