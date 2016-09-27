@@ -23,7 +23,6 @@ function logError(error) {
     console.log(colors.red(util.inspect(error, null)));
 }
 
-
 function stopRunning() {
     process.exit(1);
 }

@@ -2,11 +2,13 @@
 
 const simpleQueryValidator = require('./generic/simpleQuery.validator');
 
+const context = require('./../helpers/application.context');
+
 exports.execute = execute;
 
 function execute() {
     return simpleQueryValidator
-        .execute('sys_documentation',
-            'nameNOT LIKEx_mobi_c^elementISNOTEMPTY^sys_scope=58458eaa4f5a7100b722a5017310c7f2^hintISEMPTY',
+        .executeInScope('sys_documentation',
+            'nameNOT LIKE' + context.scope + '^elementISNOTEMPTY^hintISEMPTY',
             'Found fields without hints');
 }

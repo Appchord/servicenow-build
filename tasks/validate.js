@@ -29,6 +29,8 @@ function launchValidators(cb) {
             return;
         }
 
+        utils.logInfo('Validating ' + testFile);
+
         result.tests++;
         let promise = new Promise((resolve, reject) => {
             try {
@@ -47,7 +49,7 @@ function launchValidators(cb) {
         promises.push(promise
             .then(
                 function () {
-                    utils.logInfo('Validating ' + testFile + '... OK');
+                    utils.logInfo(testFile + ' validated...');
                     result.finished++;
                 },
                 function(error) {
