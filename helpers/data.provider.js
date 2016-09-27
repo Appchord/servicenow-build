@@ -57,34 +57,28 @@ DataProvider.prototype.getRecords = function(table, params) {
 };
 
 function parseParams(params) {
+    let query = '?sysparm_exclude_reference_link=true';
+    
     if (!params) {
-        return '';
+        return query;
     }
-    let query = '';
+
     if (params.query) {
-        addDelimiter();
-        query += 'sysparm_query=' + params.query;
+        query += '&sysparm_query=' + params.query;
     }
     if (params.fields) {
-        addDelimiter();
-        query += 'sysparm_fields=' + params.fields;
+        query += '&sysparm_fields=' + params.fields;
     }
 
     if (params.limit) {
-        addDelimiter();
-        query += 'sysparm_limit=' + params.limit;
+        query += '&sysparm_limit=' + params.limit;
     }
 
     if (params.offset) {
-        addDelimiter();
-        query += 'sysparm_offset=' + params.offset;
+        query += '&sysparm_offset=' + params.offset;
     }
 
     return query;
-
-    function addDelimiter() {
-        query += query ? '&' : '?';
-    }
 }
 
 module.exports = DataProvider;
