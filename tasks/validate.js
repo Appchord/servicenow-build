@@ -3,28 +3,9 @@
 const gulp = require('gulp');
 const sequence = require('run-sequence');
 
-const colors = require('colors/safe');
-const util = require('util');
+const utils = require('./../helpers/utils');
 
-const DataProvider = require('./../helpers/data.provider');
-let dataProvider = new DataProvider();
-
-function fail(err) {
-    console.log(colors.red(util.inspect(err, null)));
-    process.exit(1);
-}
-
-gulp.task('validate:connection', function (cb) {
-    dataProvider.getRecords('sys_update_set', {limit: 1})
-        .then(function() {
-            cb();
-        },
-        function(err) {
-            fail(err);
-        });
-});
-
-gulp.task('validate:validators', launchValidators);
+gulp.task('app:validate:validators', launchValidators);
 
 function launchValidators(cb) {
     const fs = require('fs');
@@ -66,7 +47,7 @@ function launchValidators(cb) {
         promises.push(promise
             .then(
                 function () {
-                    console.log(colors.blue('Validating ' + testFile + '... OK'));
+                    utils.logInfo('Validating ' + testFile + '... OK');
                     result.finished++;
                 },
                 function(error) {
@@ -81,16 +62,16 @@ function launchValidators(cb) {
 
     Promise.all(promises).then(function() {
         if (result.failed) {
-            console.error('%s test(s) failed', result.failed);
+            utils.logError(result.failed + ' test(s) failed');
             result.errors.forEach(function(error) {
-                console.log(colors.red(util.inspect(error, null)));
+                utils.logError(error);
             });
-            process.exit(1);
+            utils.stopRunning();
         }
         cb();
     });
 }
 
-gulp.task('validate', function(cb) {
-    sequence('validate:connection', 'validate:validators', cb);
+gulp.task('app:validate', function(cb) {
+    sequence('app:context', 'app:validate:validators', cb);
 });

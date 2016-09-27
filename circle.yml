@@ -4,4 +4,4 @@ machine:
 
 test:
   post:
-     - if [ -n "${SN_ENVIRONMENT}" ]; then gulp validate --sn-env ${SN_ENVIRONMENT} --sn-user ${SN_USER} --sn-pwd ${SN_PWD}; fi
+     - if [ -n "${SN_ENVIRONMENT}" ]; then gulp app:validate --sn-env ${SN_ENVIRONMENT} --sn-user ${SN_USER} --sn-pwd ${SN_PWD} --sn-app ${SN_APP}; fi

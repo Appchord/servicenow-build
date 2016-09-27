@@ -1,14 +1,18 @@
 'use strict';
 
 const request = require('superagent');
-const minimist = require('minimist');
+const context = require('./application.context');
 
 function DataProvider() {}
 
 DataProvider.prototype.get = function(url) {
     return new Promise((resolve, reject) => {
         try {
-            var credentials = readCredentials();
+            var credentials = {
+                environment: context.environment,
+                user: context.user,
+                password: context.password
+            };
             let fullUrl = credentials.environment + url;
 
             let req = request.get(fullUrl);
@@ -80,32 +84,6 @@ function parseParams(params) {
 
     function addDelimiter() {
         query += query ? '&' : '?';
-    }
-}
-
-function readCredentials() {
-
-    let options = minimist(process.argv.slice(2));
-    let environment = options['sn-env'];
-    let user = options['sn-user'];
-    let password = options['sn-pwd'];
-
-    if (!environment || !user || !password) {
-        throw new Error('Required credentials are not provided');
-    }
-
-    if (!environment.startsWith('https://')) {
-        environment = 'https://' + environment;
-    }
-
-    if (!environment.endsWith('/')) {
-        environment += '/';
-    }
-
-    return {
-        environment: environment,
-        user: user,
-        password: password
     }
 }
 
