@@ -8,7 +8,7 @@ function DataProvider() {}
 DataProvider.prototype.get = function(url) {
     return new Promise((resolve, reject) => {
         try {
-            var credentials = {
+            let credentials = {
                 environment: context.environment,
                 user: context.user,
                 password: context.password

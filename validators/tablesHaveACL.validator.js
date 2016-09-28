@@ -13,20 +13,20 @@ exports.execute = execute;
 
 function execute() {
     return new Promise((resolve, reject) => {
-        Promise.all([loadScopeProcessors(), loadProcessorACLs()])
+        Promise.all([loadScopeTables(), loadTableACLs()])
             .then(function(res) {
-                let processors = _.filter(res[0], function(processor) {
+                let tables = _.filter(res[0], function(table) {
                     return !_.find(res[1], function (acl) {
-                        return acl.groupby_fields[0].value === processor.name;
+                        return acl.groupby_fields[0].value === table.name;
                     });
                 });
 
-                _.each(processors, function(processor) {
-                    utils.logError('Processor ' + processor.name + ' has no ACL specified');
+                _.each(tables, function(table) {
+                    utils.logError('Table ' + table.name + ' has no table-level ACL specified');
                 });
 
-                if (processors.length) {
-                    reject('Found ' + processors.length + ' processor(s) without ACL specified');
+                if (tables.length) {
+                    reject('Found ' + tables.length + ' table(s) without table-level ACL specified');
                 } else {
                     resolve();
                 }
@@ -35,18 +35,18 @@ function execute() {
             });
     });
 
-    function loadScopeProcessors() {
-        return dataProvider.getRecords('sys_processor',
+    function loadScopeTables() {
+        return dataProvider.getRecords('sys_db_object',
             {
                 query: 'sys_scope=' + context.applicationId,
                 fields: 'name'
             });
     }
 
-    function loadProcessorACLs() {
+    function loadTableACLs() {
         return dataProvider.getAggregateRecords('sys_security_acl_role',
             {
-                query: 'sys_security_acl.active=true^sys_security_acl.type=processor^sys_security_acl.operation=execute^sys_security_acl.sys_scope=' + context.applicationId,
+                query: 'sys_security_acl.active=true^sys_security_acl.type=record^sys_security_acl.nameNOT LIKE.^sys_security_acl.sys_scope=' + context.applicationId,
                 groupBy: 'sys_security_acl.name'
             });
     }

@@ -24,7 +24,7 @@ gulp.task('app:context', function (cb) {
                     .then(
                         function(records) {
                             if (records.length) {
-                                var config = records[0];
+                                let config = records[0];
                                 context.validationConfiguration.scriptIncludesScope = config.script_includes_scope;
                             } else {
                                 utils.logWarning('Validation configuration was not found. Default settings will be used');
