@@ -28,5 +28,8 @@ module.exports = {
     environment: environment,
     user: user,
     password: password,
-    scope: scope
+    scope: scope,
+    validationConfiguration: {
+        scriptIncludesScope: 'any'
+    }
 };

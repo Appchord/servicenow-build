@@ -7,6 +7,7 @@ module.exports = {
     fail: fail,
     logInfo: logInfo,
     logSuccess: logSuccess,
+    logWarning: logWarning,
     logError: logError,
     stopRunning: stopRunning
 };
@@ -22,6 +23,10 @@ function logInfo(message) {
 
 function logSuccess(message) {
     console.log(colors.green(message));
+}
+
+function logWarning(message) {
+    console.log(colors.yellow(message));
 }
 
 function logError(error) {

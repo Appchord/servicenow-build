@@ -19,7 +19,21 @@ gulp.task('app:context', function (cb) {
                 utils.logSuccess('ENVIRONMENT: ' + context.environment);
                 utils.logSuccess('SCOPE: ' + context.scope);
                 utils.logSuccess('==================================');
-                cb();
+
+                dataProvider.getRecords('x_mobi_rm_validation_configuration', {limit: 1, query: 'application=' + context.applicationId})
+                    .then(
+                        function(records) {
+                            if (records.length) {
+                                var config = records[0];
+                                context.validationConfiguration.scriptIncludesScope = config.script_includes_scope;
+                            } else {
+                                utils.logWarning('Validation configuration was not found. Default settings will be used');
+                            }
+                            cb();
+                        },
+                        function(err) {
+                            utils.fail(err);
+                        });
             },
             function(err) {
                 utils.fail(err);
