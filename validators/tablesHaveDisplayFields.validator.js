@@ -71,7 +71,7 @@ function execute() {
     function loadScopeDisplayFields() {
         return dataProvider.getRecords('sys_dictionary',
             {
-                query: 'display=true^nameSTARTSWITH' + context.scope,
+                query: 'display=true^ORelement=name^sys_scope=' + context.applicationId,
                 fields: 'name'
             });
     }
