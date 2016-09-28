@@ -111,6 +111,10 @@ function parseAggregateParams(params) {
         query += '&sysparm_group_by=' + params.groupBy;
     }
 
+    if (params.having) {
+        query += '&sysparm_having=' + params.having;
+    }
+
     return query;
 }
 
