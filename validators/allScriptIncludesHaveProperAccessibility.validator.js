@@ -12,7 +12,7 @@ function execute() {
         return true;
     }
 
-    var name = (scope === 'public' ? 'All application scopes' : 'This application scope only');
+    let name = (scope === 'public' ? 'All application scopes' : 'This application scope only');
 
     return simpleQueryValidator
         .executeInScope('sys_script_include',
