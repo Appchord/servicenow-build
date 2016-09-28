@@ -51,9 +51,23 @@ DataProvider.prototype.get = function(url) {
 
 DataProvider.prototype.getRecords = function(table, params) {
     let url = 'api/now/table/' + table + parseParams(params);
-    return this.get(url).then(function(res) {
-        return res || [];
-    });
+    return this.get(url)
+        .then(function(res) {
+            return res || [];
+        },
+        function(err) {
+            throw err;
+        });
+};
+
+DataProvider.prototype.getAggregateRecords = function(table, params) {
+    let url = 'api/now/v1/stats/' + table + parseAggregateParams(params);
+    return this.get(url)
+        .then(function(res) {
+            return res || [];
+        }, function(err) {
+            throw err;
+        });
 };
 
 function parseParams(params) {
@@ -66,6 +80,7 @@ function parseParams(params) {
     if (params.query) {
         query += '&sysparm_query=' + params.query;
     }
+
     if (params.fields) {
         query += '&sysparm_fields=' + params.fields;
     }
@@ -76,6 +91,24 @@ function parseParams(params) {
 
     if (params.offset) {
         query += '&sysparm_offset=' + params.offset;
+    }
+
+    return query;
+}
+
+function parseAggregateParams(params) {
+    let query = '?sysparm_count=true';
+
+    if (!params) {
+        return query;
+    }
+
+    if (params.query) {
+        query += '&sysparm_query=' + params.query;
+    }
+
+    if (params.groupBy) {
+        query += '&sysparm_group_by=' + params.groupBy;
     }
 
     return query;
