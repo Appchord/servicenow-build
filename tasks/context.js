@@ -15,6 +15,10 @@ gulp.task('app:context', function (cb) {
                     utils.fail(new Error('Unable to find application ' + context.scope));
                 }
                 context.applicationId = records[0].sys_id;
+                utils.logSuccess('======= VALIDATION CONTEXT =======');
+                utils.logSuccess('ENVIRONMENT: ' + context.environment);
+                utils.logSuccess('SCOPE: ' + context.scope);
+                utils.logSuccess('==================================');
                 cb();
             },
             function(err) {

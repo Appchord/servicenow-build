@@ -6,6 +6,7 @@ const util = require('util');
 module.exports = {
     fail: fail,
     logInfo: logInfo,
+    logSuccess: logSuccess,
     logError: logError,
     stopRunning: stopRunning
 };
@@ -17,6 +18,10 @@ function fail(err) {
 
 function logInfo(message) {
     console.log(colors.blue(message));
+}
+
+function logSuccess(message) {
+    console.log(colors.green(message));
 }
 
 function logError(error) {

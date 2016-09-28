@@ -35,5 +35,5 @@ function execute(table, query, errorDescription) {
 }
 
 function executeInScope(table, query, errorDescription) {
-    return execute(table, '^sys_scope=' + context.applicationId + '^' + query, errorDescription)
+    return execute(table, 'sys_scope=' + context.applicationId + '^' + query, errorDescription)
 }
